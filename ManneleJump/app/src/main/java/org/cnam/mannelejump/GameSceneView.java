@@ -8,22 +8,23 @@ import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
+import java.util.ArrayList;
+
 public class GameSceneView extends SurfaceView implements Runnable {
 
     Thread thread = null;
     SurfaceHolder surfaceHolder;
     boolean running = false;
     Player santa;
-    Platform platform;
-    //CommandPad commandPad;
+    ArrayList<Platform> platforms;
     int count = 0;
     double deltaTime;
 
     public GameSceneView(Context context) {
         super(context);
         surfaceHolder = getHolder();
-        santa = new Player(this, R.drawable.jump4);
-        platform = new Platform(this, R.drawable.platform);
+        santa = new Player(this);
+        platforms = Platform.generatePlatforms(this);
         //commandPad = new CommandPad(this, R.drawable.jumpbtn1);
         //generatePlatforms en static
     }
@@ -45,17 +46,16 @@ public class GameSceneView extends SurfaceView implements Runnable {
             Canvas canvas = surfaceHolder.lockCanvas();
 
             clearCanvasInWhite(canvas);
-            if (count == 0) {
-                santa.initPosition(canvas.getWidth() / 2, canvas.getHeight() / 2);
-            }
+
             ///draw here
             //commandPad.onDraw(canvas);
             santa.onDraw(canvas);
             santa.update(deltaTime);
-            santa.verifyIfLanding(platform);
-
-            platform.onDraw(canvas);
-
+            for (Platform platform : platforms) {
+                santa.verifyIfLanding(platform);
+                platform.update(deltaTime);
+                platform.onDraw(canvas);
+            }
             surfaceHolder.unlockCanvasAndPost(canvas);
             count++;
         }

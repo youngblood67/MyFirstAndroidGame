@@ -4,34 +4,43 @@ import android.graphics.Bitmap;
 
 public abstract class GameObject extends MainGameObject {
 
-    protected int xSpeed, ySpeed;
+    protected static int canvasHeight = 0;
+    protected double xSpeed, ySpeed;
+    protected double mass;
+    protected int gravity;
 
 
-    GameObject(GameSceneView gameSceneView, int drawable) {
-        super(gameSceneView, drawable);
+    GameObject(GameSceneView gameSceneView) {
+        super(gameSceneView);
     }
 
 
     public abstract void update(double dt);
 
-    public abstract void gravity(int maxHeight);
-
     //GETTERS and SETTERS
 
 
-    public int getxSpeed() {
+    public double getMass() {
+        return mass;
+    }
+
+    public void setMass(double mass) {
+        this.mass = mass;
+    }
+
+    public double getxSpeed() {
         return xSpeed;
     }
 
-    public void setxSpeed(int xSpeed) {
+    public void setxSpeed(double xSpeed) {
         this.xSpeed = xSpeed;
     }
 
-    public int getySpeed() {
+    public double getySpeed() {
         return ySpeed;
     }
 
-    public void setySpeed(int ySpeed) {
+    public void setySpeed(double ySpeed) {
         this.ySpeed = ySpeed;
     }
 }

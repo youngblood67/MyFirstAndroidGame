@@ -10,6 +10,8 @@ import android.view.View;
 public class MainActivity extends AppCompatActivity implements View.OnTouchListener {
     GameSceneView gameSceneView;
 
+    public static Movement santaMovement = Movement.STOP;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,24 +35,23 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
     @Override
     public boolean onTouch(View v, MotionEvent event) {
         try {
-            Thread.sleep(10);
+            Thread.sleep(2);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
 
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
-                gameSceneView.santa.x = event.getX();
-                gameSceneView.santa.y = event.getY();
-                Log.i("INFO", String.valueOf(event.getX()) + " " + String.valueOf(gameSceneView.santa.x));
-                Log.i("INFO", String.valueOf(event.getY()) + " " + String.valueOf(gameSceneView.santa.y));
+                if (event.getX() <= (double) v.getWidth() / 2) {
+                    santaMovement = Movement.LEFT;
+                } else if (event.getX() > (double) v.getWidth() / 2) {
+                    santaMovement = Movement.RIGHT;
+                }
             case MotionEvent.ACTION_UP:
-                gameSceneView.santa.x = event.getX();
-                gameSceneView.santa.y = event.getY();
+
                 break;
             case MotionEvent.ACTION_MOVE:
-                gameSceneView.santa.x = event.getX();
-                gameSceneView.santa.y = event.getY();
+
                 break;
         }
         return true;
